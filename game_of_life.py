@@ -1,5 +1,11 @@
+"""
+Nombre: Javier Sebastián Valle Balsells
+Carnet: 20159
+Referencia: https://www.youtube.com/watch?v=cRWg2SWuXtM
+"""
+
 import time
-from turtle import update 
+#from turtle import update 
 import pygame
 import numpy as np
 
@@ -38,8 +44,8 @@ def actualizar(pantalla, celda, tamano, progreso=False):
 
 def main():
     pygame.init()
-    pygame.display.set_caption("Game of Life")
-    pantalla = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("Laboratorio 3 - Juego de la vida")
+    pantalla = pygame.display.set_mode((650, 650))
     
     cells = np.zeros((600//10, 800//10)) #Matriz de células.
     pantalla.fill(fondo)
@@ -49,6 +55,48 @@ def main():
     pygame.display.update()
 
     r = False #Variable para saber si se está mostrando el progreso.
+
+    puntos = [
+        [20, 20],
+        [20, 21], 
+        [20, 22], 
+        [20, 23], 
+        [25, 13],
+        [25, 14],
+        [25, 15],
+        [25, 16],
+        [25, 17],
+        [25, 18],
+        [25, 19],
+        [25, 20],
+        [29, 21],
+        [30, 21],
+        [29, 22],
+        [30, 22],
+        [29, 23],
+        [30, 23],
+        [35, 5],
+        [35, 6],
+        [36, 5],
+        [36, 6],
+        [37, 7],
+        [37, 8],
+        [38, 7],
+        [35, 8],
+        [50, 25],
+        [51, 26],
+        [52, 24],
+        [52, 25],
+        [52, 26],
+        [52, 27],
+    ] #Puntos iniciales.
+
+    #Recorremos la lista de puntos iniciales y cambiamos el estado de las células.
+    for punto in puntos:
+        cells[punto[0], punto[1]] = 1
+        pygame.draw.rect(pantalla, vida, (punto[1]*10, punto[0]*10, 10 - 1, 10 - 1))
+        actualizar(pantalla, cells, 10)
+        pygame.display.update()
     
     while True: #Bucle principal.
         for event in pygame.event.get():
@@ -56,18 +104,23 @@ def main():
                 # = True
                 pygame.quit()
                 return
-            if event.type == pygame.KEYDOWN: #Si se pulsa una tecla se muestra el progreso.
-                if event.key == pygame.K_SPACE: #Si se pulsa la barra espaciadora, se muestra el progreso.
-                    r = not r #Cambiamos el valor de la variable.
-                    actualizar(pantalla, cells, 10) #Actualizamos el estado de las células.
-                    pygame.display.update()
-
-            if pygame.mouse.get_pressed()[0]: #Si se pulsa el ratón, se cambia el estado de la célula.
-                pos = pygame.mouse.get_pos()
-                cells[pos[1]//10, pos[0]//10] = 1
-                #pygame.draw.rect(pantalla, vida, (x//10*10, y//10*10, 10 - 1, 10 - 1))
-                actualizar(pantalla, cells, 10)
+            # if event.type == pygame.KEYDOWN: #Si se pulsa una tecla se muestra el progreso.
+            #     if event.key == pygame.K_SPACE: #Si se pulsa la barra espaciadora, se muestra el progreso.
+            #         r = not r #Cambiamos el valor de la variable.    
+            #         actualizar(pantalla, cells, 10) #Actualizamos el estado de las células.
+            #         pygame.display.update()
+            else: 
+                r = not r #Cambiamos el valor de la variable.    
+                actualizar(pantalla, cells, 10) #Actualizamos el estado de las células.
                 pygame.display.update()
+
+            # if pygame.mouse.get_pressed()[0]: #Si se pulsa el ratón, se cambia el estado de la célula.
+            #     pos = pygame.mouse.get_pos()
+            #     cells[pos[1]//10, pos[0]//10] = 1
+            #     #pygame.draw.rect(pantalla, vida, (x//10*10, y//10*10, 10 - 1, 10 - 1))
+            #     actualizar(pantalla, cells, 10)
+            #     pygame.display.update()
+
 
         pantalla.fill(grid) #Dibujamos la cuadrícula.
         if r: #Si se está mostrando el progreso, se actualiza el estado de las células.
